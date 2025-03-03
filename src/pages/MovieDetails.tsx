@@ -40,45 +40,51 @@ export default function MovieDetails() {
   };
 
   if (loading) return <LoadingSpinner />;
-  if (error) return <p className="text-red-500 text-center">{error}</p>;
+  if (error) return <p className="text-red-400 text-center">{error}</p>;
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto pt-2 min-h-screen flex flex-col justify-center">
       <button
         onClick={() => navigate(-1)}
-        className="mb-4 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition"
+        className="mb-4 px-4 py-2 bg-gray-700 text-gray-100 rounded hover:bg-gray-600 transition self-start"
       >
         Back
       </button>
-      <div className="bg-white p-6 rounded shadow flex flex-col items-center">
+      <div className="bg-gray-800 p-6 rounded-lg shadow-xl shadow-gray-500/50 flex flex-col md:flex-row items-start w-full max-w-4xl">
         <img
           src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
           alt={movie.title}
-          className="w-full max-w-md rounded"
+          className="w-full md:w-1/2 h-auto max-h-[600px] rounded object-cover"
         />
-        <h1 className="text-3xl font-bold mt-4">{movie.title}</h1>
-        <p className="text-gray-600 mt-2">{movie.overview}</p>
-        <p className="mt-2">Release Date: {movie.release_date}</p>
-        <p>Rating: {movie.vote_average}/10</p>
-        <button
-          onClick={handleFavoriteToggle}
-          className={`mt-4 text-2xl ${
-            isFavorite
-              ? "text-red-500 hover:text-red-600"
-              : "text-gray-400 hover:text-gray-500"
-          } transition`}
-          aria-label={isFavorite ? "Remove from Favorites" : "Add to Favorites"}
-        >
-          {isFavorite ? (
-            <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
-              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-            </svg>
-          ) : (
-            <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
-              <path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z" />
-            </svg>
-          )}
-        </button>
+        <div className="md:ml-6 mt-4 md:mt-0 flex flex-col items-start w-full md:w-1/2">
+          <button
+            onClick={handleFavoriteToggle}
+            className={`text-2xl ${
+              isFavorite
+                ? "text-red-400 hover:text-red-500"
+                : "text-gray-300 hover:text-gray-400"
+            } transition mb-4`}
+            aria-label={
+              isFavorite ? "Remove from Favorites" : "Add to Favorites"
+            }
+          >
+            {isFavorite ? (
+              <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+              </svg>
+            ) : (
+              <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                <path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z" />
+              </svg>
+            )}
+          </button>
+          <h1 className="text-2xl font-bold text-gray-100">{movie.title}</h1>
+          <p className="text-gray-300 mt-2">{movie.overview}</p>
+          <p className="mt-2 text-gray-400">
+            Release Date: {movie.release_date}
+          </p>
+          <p className="text-gray-400">Rating: {movie.vote_average}/10</p>
+        </div>
       </div>
     </div>
   );

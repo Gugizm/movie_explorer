@@ -13,7 +13,6 @@ export default function SearchBar({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Search submitted:", query); // Debug
     onSearch(query);
   };
 
@@ -24,11 +23,11 @@ export default function SearchBar({
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder={placeholder}
-        className="w-full max-w-md p-2 rounded-l border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 z-10"
+        className="w-full max-w-md p-2 rounded-l border border-gray-700 bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500"
       />
       <button
         type="submit"
-        className="bg-blue-500 text-white p-2 rounded-r hover:bg-blue-600 transition z-20"
+        className="bg-gray-700 text-gray-100 p-2 rounded-r hover:bg-gray-600 transition"
       >
         Search
       </button>

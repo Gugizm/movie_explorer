@@ -30,15 +30,11 @@ export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     localStorage.setItem("favorites", JSON.stringify(favorites));
-    console.log(
-      "Favorites updated:",
-      favorites.map((f) => f.id)
-    ); // Debug
   }, [favorites]);
 
   const addFavorite = (movie: Movie) => {
     setFavorites((prev) => {
-      if (prev.some((f) => f.id === movie.id)) return prev; // Avoid duplicates
+      if (prev.some((f) => f.id === movie.id)) return prev;
       return [...prev, movie];
     });
   };
