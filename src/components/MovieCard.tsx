@@ -18,6 +18,14 @@ const MovieCard = forwardRef<HTMLDivElement, { movie: Movie }>(
       navigate(`/movie/${movie.id}`);
     };
 
+    const handleFavoriteToggle = () => {
+      if (isFavorite) {
+        removeFavorite(movie.id);
+      } else {
+        addFavorite(movie);
+      }
+    };
+
     return (
       <div
         ref={ref}
@@ -29,22 +37,39 @@ const MovieCard = forwardRef<HTMLDivElement, { movie: Movie }>(
           className="w-full h-64 object-cover rounded"
         />
         <h3 className="mt-2 font-semibold truncate">{movie.title}</h3>
-        <div className="mt-auto flex space-x-2 pt-2">
+        <div className="mt-auto flex items-center justify-between pt-2">
           <button
-            onClick={() =>
-              isFavorite ? removeFavorite(movie.id) : addFavorite(movie)
-            }
-            className={`flex-1 px-4 py-2 rounded text-white ${
+            onClick={handleFavoriteToggle}
+            className={`text-2xl ${
               isFavorite
-                ? "bg-red-500 hover:bg-red-600"
-                : "bg-blue-500 hover:bg-blue-600"
+                ? "text-red-500 hover:text-red-600"
+                : "text-gray-400 hover:text-gray-500"
             } transition`}
+            aria-label={
+              isFavorite ? "Remove from Favorites" : "Add to Favorites"
+            }
           >
-            {isFavorite ? "Remove Favorite" : "Add to Favorites"}
+            {isFavorite ? (
+              <svg
+                className="w-6 h-6 text-red-500 hover:text-red-600"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+              </svg>
+            ) : (
+              <svg
+                className="w-6 h-6 text-gray-400 hover:text-gray-500"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z" />
+              </svg>
+            )}
           </button>
           <button
             onClick={handleDetails}
-            className="flex-1 px-4 py-2 rounded bg-green-500 text-white hover:bg-green-600 transition"
+            className="px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600 transition"
           >
             Details
           </button>
