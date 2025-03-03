@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from "react";
 import { useFavorites } from "../context/FavoritesContext";
-import { useNavigate } from "react-router-dom";
 import MovieCard from "../components/MovieCard";
 import SearchBar from "../components/SearchBar";
 
@@ -8,14 +7,13 @@ export default function Favorites() {
   const { favorites } = useFavorites();
   const [displayedMovies, setDisplayedMovies] = useState(30);
   const [filteredFavorites, setFilteredFavorites] = useState(favorites);
-  const scrollRef = useRef<number>(0);
-  const navigate = useNavigate();
+  const scrollRef = useRef(0);
 
   useEffect(() => {
     setFilteredFavorites(favorites);
   }, [favorites]);
 
-  const handleSearch = (query: string) => {
+  const handleSearch = (query) => {
     if (!query.trim()) {
       setFilteredFavorites(favorites);
     } else {

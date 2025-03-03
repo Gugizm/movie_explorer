@@ -1,54 +1,86 @@
-# React + TypeScript + Vite
+# Movie App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a React-based Movie App that allows users to browse movies, view details, and mark favorites. It uses Tailwind CSS for styling and React Router for navigation.
 
-Currently, two official plugins are available:
+## Features
+- Display a list of trending movies
+- Search for movies
+- View movie details
+- Add/remove movies from favorites
+- Infinite scrolling for movie loading
+- Responsive UI with Tailwind CSS
+- Smooth navigation using React Router
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Installation
 
-## Expanding the ESLint configuration
+1. **Clone the repository:**
+   ```sh
+   git clone https://github.com/your-username/movie-app.git
+   cd movie-app
+   ```
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+2. **Install dependencies:**
+   ```sh
+   npm install
+   ```
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+3. **Start the development server:**
+   ```sh
+   npm run dev
+   ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Technologies Used
+- **React** with TypeScript
+- **Tailwind CSS** for styling
+- **React Router** for navigation
+- **Vite** for development
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Components Overview
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+### Navbar.tsx
+- Provides navigation between "Home" and "Favorites" pages.
+
+### MovieCard.tsx
+- Displays a movie's poster, title, rating, and favorite toggle button.
+
+### LoadingSpinner.tsx
+- Shows a spinning loader while content is being fetched.
+
+### SearchBar.tsx
+- Allows users to search for movies within favorites or the main list.
+
+### FavoritesContext.tsx
+- Manages the state for favorite movies using React Context API.
+
+### movies.ts
+- Contains API calls for fetching trending movies and searching for movies.
+
+### App.tsx
+- The main app component that sets up React Router and includes global layout elements.
+
+### Home.tsx
+- Displays trending movies with infinite scrolling and search functionality.
+
+### Favorites.tsx
+- Displays the list of favorite movies with a search bar and infinite scrolling.
+
+### MovieDetails.tsx
+- Shows detailed information about a selected movie.
+
+## How It Works
+1. **Home Page**
+   - Displays trending movies using `fetchTrendingMovies()` from `movies.ts`.
+   - Allows searching movies with `searchMovies()`.
+   - Uses infinite scrolling to load more movies.
+
+2. **Favorites Page**
+   - Lists favorite movies stored in context.
+   - Allows searching within favorites.
+   - Uses infinite scrolling to load more favorites.
+
+3. **Movie Details Page**
+   - Displays details of a selected movie.
+   - Allows adding/removing a movie from favorites.
+
+## License
+This project is licensed under the MIT License.

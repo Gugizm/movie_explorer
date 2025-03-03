@@ -5,13 +5,13 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import SearchBar from "../components/SearchBar";
 
 export default function Home() {
-  const [movies, setMovies] = useState<any[]>([]);
+  const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [isSearching, setIsSearching] = useState(false);
-  const scrollRef = useRef<number>(0);
-  const moviesQueryRef = useRef<string>("");
+  const scrollRef = useRef(0);
+  const moviesQueryRef = useRef("");
 
   const loadMovies = async (reset = false) => {
     scrollRef.current = window.scrollY;
@@ -26,12 +26,12 @@ export default function Home() {
       );
       setMovies((prev) => {
         const newMovies = reset ? validData : [...prev, ...validData];
-        const uniqueMoviesMap = new Map<number, any>();
+        const uniqueMoviesMap = new Map();
         newMovies.forEach((movie) => uniqueMoviesMap.set(movie.id, movie));
         return Array.from(uniqueMoviesMap.values());
       });
     } catch (err) {
-      setError("Failed to load movies.");
+      setError(`Failed to load movies: ${err.message}`);
     } finally {
       setLoading(false);
       requestAnimationFrame(() => window.scrollTo(0, scrollRef.current));
@@ -39,58 +39,52 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const initialLoad = async () => {
-      setLoading(true);
-      try {
-        const page1 = await fetchTrendingMovies(1);
-        const page2 = await fetchTrendingMovies(2);
+    setLoading(true);
+    fetchTrendingMovies(1)
+      .then((page1) => fetchTrendingMovies(2).then((page2) => [page1, page2]))
+      .then(([page1, page2]) => {
         const combined = [...page1, ...page2].filter(
           (movie) => movie.poster_path && movie.poster_path.trim()
         );
-        const uniqueMoviesMap = new Map<number, any>();
+        const uniqueMoviesMap = new Map();
         combined.forEach((movie) => uniqueMoviesMap.set(movie.id, movie));
         setMovies(Array.from(uniqueMoviesMap.values()));
         setPage(3);
-      } catch (err) {
-        setError("Failed to load trending movies.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    initialLoad();
+      })
+      .catch((err) =>
+        setError(`Failed to load trending movies: ${err.message}`)
+      )
+      .finally(() => setLoading(false));
   }, []);
 
-  const handleSearch = async (query: string) => {
+  const handleSearch = async (query) => {
     moviesQueryRef.current = query;
     setLoading(true);
     try {
       if (!query.trim()) {
-        setIsSearching(false);
-        setPage(1);
+        setLoading(true);
         const page1 = await fetchTrendingMovies(1);
         const page2 = await fetchTrendingMovies(2);
         const combined = [...page1, ...page2].filter(
           (movie) => movie.poster_path && movie.poster_path.trim()
         );
-        const uniqueMoviesMap = new Map<number, any>();
+        const uniqueMoviesMap = new Map();
         combined.forEach((movie) => uniqueMoviesMap.set(movie.id, movie));
         setMovies(Array.from(uniqueMoviesMap.values()));
         setPage(3);
+        setIsSearching(false);
       } else {
         setIsSearching(true);
         setPage(1);
-        const page1 = await searchMovies(query, 1);
-        const page2 = await searchMovies(query, 2);
-        const combined = [...page1, ...page2].filter(
+        const data = await searchMovies(query, 1);
+        const validData = data.filter(
           (movie) => movie.poster_path && movie.poster_path.trim()
         );
-        const uniqueMoviesMap = new Map<number, any>();
-        combined.forEach((movie) => uniqueMoviesMap.set(movie.id, movie));
-        setMovies(Array.from(uniqueMoviesMap.values()));
-        setPage(3);
+        setMovies(validData);
+        setPage(2);
       }
     } catch (err) {
-      setError("Failed to load movies.");
+      setError(`Failed to load movies: ${err.message}`);
     } finally {
       setLoading(false);
     }
@@ -118,7 +112,7 @@ export default function Home() {
   }, [loading]);
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto px-4 py-6 bg-gray-900 text-gray-100">
       <SearchBar onSearch={handleSearch} placeholder="Search for a movie..." />
       {loading && movies.length === 0 && <LoadingSpinner />}
       {error && <p className="text-red-400 text-center">{error}</p>}
@@ -127,7 +121,7 @@ export default function Home() {
       )}
       {movies.length > 0 && (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 place-items-center">
             {movies.map((movie) => (
               <MovieCard key={movie.id} movie={movie} />
             ))}
