@@ -1,21 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react"; // Added useRef
 import { useFavorites } from "../context/FavoritesContext";
 import MovieCard from "../components/MovieCard";
 
 export default function Favorites() {
   const { favorites } = useFavorites();
   const [displayedMovies, setDisplayedMovies] = useState(30);
-  const scrollRef = useRef<number>(0); // Track scroll position
+  const scrollRef = useRef<number>(0);
 
   const handleLoadMore = () => {
-    scrollRef.current = window.scrollY; // Save scroll position
+    scrollRef.current = window.scrollY;
     setDisplayedMovies((prev) => prev + 30);
     requestAnimationFrame(() => {
-      window.scrollTo(0, scrollRef.current); // Restore scroll position
+      window.scrollTo(0, scrollRef.current);
     });
   };
 
-  // Scroll event listener
   useEffect(() => {
     const handleScroll = () => {
       if (

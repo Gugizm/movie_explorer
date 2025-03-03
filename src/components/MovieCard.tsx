@@ -15,6 +15,7 @@ const MovieCard = forwardRef<HTMLDivElement, { movie: Movie }>(
     const isFavorite = favorites.some((fav) => fav.id === movie.id);
 
     const handleDetails = () => {
+      console.log("Navigating to:", `/movie/${movie.id}`);
       navigate(`/movie/${movie.id}`);
     };
 

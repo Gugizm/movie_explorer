@@ -8,6 +8,7 @@ export default function Navbar() {
           <NavLink
             to="/"
             className={({ isActive }) => (isActive ? "font-bold" : "")}
+            onClick={() => console.log("Home clicked")}
           >
             Home
           </NavLink>
@@ -16,6 +17,7 @@ export default function Navbar() {
           <NavLink
             to="/favorites"
             className={({ isActive }) => (isActive ? "font-bold" : "")}
+            onClick={() => console.log("Favorites clicked")}
           >
             Favorites
           </NavLink>

@@ -22,7 +22,13 @@ export default function Home() {
       } else {
         data = await fetchTrendingMovies(page);
       }
-      setMovies((prev) => (reset ? data : [...prev, ...data]));
+      setMovies((prev) => {
+        const newMovies = reset ? data : [...prev, ...data];
+        const uniqueMovies = Array.from(
+          new Set(newMovies.map((m) => m.id))
+        ).map((id) => newMovies.find((m) => m.id === id));
+        return uniqueMovies;
+      });
     } catch (err) {
       setError("Failed to load movies.");
     } finally {
@@ -33,7 +39,6 @@ export default function Home() {
     }
   };
 
-  // Initial load: 2 pages (40 movies)
   useEffect(() => {
     const initialLoad = async () => {
       setLoading(true);
@@ -51,7 +56,6 @@ export default function Home() {
     initialLoad();
   }, []);
 
-  // Handle search and reset
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!searchQuery.trim()) {
@@ -71,7 +75,6 @@ export default function Home() {
     }
   };
 
-  // Load more on scroll or button click
   const handleLoadMore = () => {
     if (!loading) {
       loadMovies();
@@ -79,7 +82,6 @@ export default function Home() {
     }
   };
 
-  // Scroll event listener
   useEffect(() => {
     const handleScroll = () => {
       if (
@@ -97,7 +99,6 @@ export default function Home() {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6 text-center">Movie Explorer</h1>
-
       <form onSubmit={handleSearch} className="mb-8 flex justify-center">
         <input
           type="text"
@@ -114,39 +115,37 @@ export default function Home() {
         </button>
       </form>
 
-      {/* Initial loading or error */}
+      {/* Initial load or error */}
       {loading && movies.length === 0 && <LoadingSpinner />}
       {error && <p className="text-red-500 text-center">{error}</p>}
       {!loading && !error && movies.length === 0 && (
         <p className="text-center text-gray-500">No movies found.</p>
       )}
 
-      {/* Movie grid */}
-      {!loading && !error && movies.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {movies.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} />
-          ))}
-        </div>
-      )}
-
-      {/* Load more section */}
+      {/* Movie grid and bottom loader */}
       {movies.length > 0 && (
-        <div className="mt-6 text-center">
-          {loading ? (
-            <div className="inline-block">
-              <LoadingSpinner />
-              <p className="text-gray-500 mt-2">Loading more movies...</p>
-            </div>
-          ) : (
-            <button
-              onClick={handleLoadMore}
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
-            >
-              Load More
-            </button>
-          )}
-        </div>
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {movies.map((movie) => (
+              <MovieCard key={movie.id} movie={movie} />
+            ))}
+          </div>
+          <div className="mt-6 text-center">
+            {loading ? (
+              <div className="inline-block">
+                <LoadingSpinner />
+                <p className="text-gray-500 mt-2">Loading more movies...</p>
+              </div>
+            ) : (
+              <button
+                onClick={handleLoadMore}
+                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+              >
+                Load More
+              </button>
+            )}
+          </div>
+        </>
       )}
     </div>
   );
