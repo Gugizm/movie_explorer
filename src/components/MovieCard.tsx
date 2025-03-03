@@ -2,7 +2,7 @@ import { forwardRef } from "react";
 import { useFavorites } from "../context/FavoritesContext";
 import { useNavigate } from "react-router-dom";
 
-interface Movie {
+export interface Movie {
   id: number;
   title: string;
   poster_path: string;

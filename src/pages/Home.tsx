@@ -1,14 +1,9 @@
 import { useEffect, useState, useRef } from "react";
 import { fetchTrendingMovies, searchMovies } from "../api/movies";
 import MovieCard from "../components/MovieCard";
+import { Movie } from "../components/MovieCard";
 import LoadingSpinner from "../components/LoadingSpinner";
 import SearchBar from "../components/SearchBar";
-
-type Movie = {
-  id: number;
-  poster_path: string;
-  vote_average: number;
-};
 
 export default function Home() {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -33,7 +28,9 @@ export default function Home() {
       setMovies((prev) => {
         const newMovies = reset ? validData : [...prev, ...validData];
         const uniqueMoviesMap = new Map();
-        newMovies.forEach((movie) => uniqueMoviesMap.set(movie.id, movie));
+        newMovies.forEach((movie: Movie) =>
+          uniqueMoviesMap.set(movie.id, movie)
+        );
         return Array.from(uniqueMoviesMap.values());
       });
     } catch (err: unknown) {
@@ -88,7 +85,7 @@ export default function Home() {
         setPage(1);
         const data = await searchMovies(query, 1);
         const validData = data.filter(
-          (movie) => movie.poster_path && movie.poster_path.trim()
+          (movie: Movie) => movie.poster_path && movie.poster_path.trim()
         );
         setMovies(validData);
         setPage(2);
@@ -136,7 +133,7 @@ export default function Home() {
       {movies.length > 0 && (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 place-items-center">
-            {movies.map((movie) => (
+            {movies.map((movie: Movie) => (
               <MovieCard key={movie.id} movie={movie} />
             ))}
           </div>
