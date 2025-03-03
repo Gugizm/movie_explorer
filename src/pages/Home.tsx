@@ -4,12 +4,18 @@ import MovieCard from "../components/MovieCard";
 import LoadingSpinner from "../components/LoadingSpinner";
 import SearchBar from "../components/SearchBar";
 
+type Movie = {
+  id: number;
+  poster_path: string;
+  vote_average: number;
+};
+
 export default function Home() {
-  const [movies, setMovies] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [movies, setMovies] = useState<Movie[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [page, setPage] = useState(1);
-  const [isSearching, setIsSearching] = useState(false);
+  const [page, setPage] = useState<number>(1);
+  const [isSearching, setIsSearching] = useState<boolean>(false);
   const scrollRef = useRef(0);
   const moviesQueryRef = useRef("");
 
@@ -22,7 +28,7 @@ export default function Home() {
           ? await searchMovies(moviesQueryRef.current, page)
           : await fetchTrendingMovies(page);
       const validData = data.filter(
-        (movie) => movie.poster_path && movie.poster_path.trim()
+        (movie: Movie) => movie.poster_path && movie.poster_path.trim()
       );
       setMovies((prev) => {
         const newMovies = reset ? validData : [...prev, ...validData];
@@ -30,8 +36,12 @@ export default function Home() {
         newMovies.forEach((movie) => uniqueMoviesMap.set(movie.id, movie));
         return Array.from(uniqueMoviesMap.values());
       });
-    } catch (err) {
-      setError(`Failed to load movies: ${err.message}`);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(`Failed to load movies: ${err.message}`);
+      } else {
+        setError("An unknown error occurred");
+      }
     } finally {
       setLoading(false);
       requestAnimationFrame(() => window.scrollTo(0, scrollRef.current));
@@ -57,7 +67,7 @@ export default function Home() {
       .finally(() => setLoading(false));
   }, []);
 
-  const handleSearch = async (query) => {
+  const handleSearch = async (query: string) => {
     moviesQueryRef.current = query;
     setLoading(true);
     try {
@@ -83,8 +93,12 @@ export default function Home() {
         setMovies(validData);
         setPage(2);
       }
-    } catch (err) {
-      setError(`Failed to load movies: ${err.message}`);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(`Failed to load movies: ${err.message}`);
+      } else {
+        setError("An unknown error occurred");
+      }
     } finally {
       setLoading(false);
     }
@@ -130,15 +144,9 @@ export default function Home() {
             {loading ? (
               <div className="inline-block">
                 <LoadingSpinner />
-                <p className="text-gray-400 mt-2">Loading more movies...</p>
               </div>
             ) : (
-              <button
-                onClick={handleLoadMore}
-                className="bg-gray-700 text-gray-100 px-4 py-2 rounded hover:bg-gray-600 transition"
-              >
-                Load More
-              </button>
+              <button onClick={handleLoadMore}>Load More</button>
             )}
           </div>
         </>
