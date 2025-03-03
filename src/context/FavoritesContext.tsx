@@ -24,18 +24,23 @@ const FavoritesContext = createContext<FavoritesContextType | undefined>(
 
 export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
   const [favorites, setFavorites] = useState<Movie[]>(() => {
-    // Load from localStorage on init
     const saved = localStorage.getItem("favorites");
     return saved ? JSON.parse(saved) : [];
   });
 
   useEffect(() => {
-    // Save to localStorage whenever favorites change
     localStorage.setItem("favorites", JSON.stringify(favorites));
+    console.log(
+      "Favorites updated:",
+      favorites.map((f) => f.id)
+    ); // Debug
   }, [favorites]);
 
   const addFavorite = (movie: Movie) => {
-    setFavorites((prev) => [...prev, movie]);
+    setFavorites((prev) => {
+      if (prev.some((f) => f.id === movie.id)) return prev; // Avoid duplicates
+      return [...prev, movie];
+    });
   };
 
   const removeFavorite = (id: number) => {

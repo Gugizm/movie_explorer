@@ -1,11 +1,31 @@
-import { useEffect, useState, useRef } from "react"; // Added useRef
+import { useEffect, useState, useRef } from "react";
 import { useFavorites } from "../context/FavoritesContext";
+import { useNavigate } from "react-router-dom";
 import MovieCard from "../components/MovieCard";
+import SearchBar from "../components/SearchBar";
 
 export default function Favorites() {
   const { favorites } = useFavorites();
   const [displayedMovies, setDisplayedMovies] = useState(30);
+  const [filteredFavorites, setFilteredFavorites] = useState(favorites);
   const scrollRef = useRef<number>(0);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setFilteredFavorites(favorites); // Sync with context
+  }, [favorites]);
+
+  const handleSearch = (query: string) => {
+    if (!query.trim()) {
+      setFilteredFavorites(favorites); // Reset to all favorites
+    } else {
+      setFilteredFavorites(
+        favorites.filter((movie) =>
+          movie.title.toLowerCase().includes(query.toLowerCase())
+        )
+      );
+    }
+  };
 
   const handleLoadMore = () => {
     scrollRef.current = window.scrollY;
@@ -28,12 +48,13 @@ export default function Favorites() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const visibleFavorites = favorites.slice(0, displayedMovies);
+  const visibleFavorites = filteredFavorites.slice(0, displayedMovies);
 
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6 text-center">Your Favorites</h1>
-      {favorites.length === 0 ? (
+      <SearchBar onSearch={handleSearch} placeholder="Search favorites..." />
+      {filteredFavorites.length === 0 ? (
         <p className="text-center text-gray-500">No favorites added yet.</p>
       ) : (
         <>
@@ -42,7 +63,7 @@ export default function Favorites() {
               <MovieCard key={movie.id} movie={movie} />
             ))}
           </div>
-          {displayedMovies < favorites.length && (
+          {displayedMovies < filteredFavorites.length && (
             <div className="mt-6 text-center">
               <button
                 onClick={handleLoadMore}
