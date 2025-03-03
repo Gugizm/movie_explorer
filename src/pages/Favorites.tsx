@@ -13,7 +13,7 @@ export default function Favorites() {
     setFilteredFavorites(favorites);
   }, [favorites]);
 
-  const handleSearch = (query) => {
+  const handleSearch = (query: string) => {
     if (!query.trim()) {
       setFilteredFavorites(favorites);
     } else {
