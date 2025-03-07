@@ -22,49 +22,53 @@ export default function Navbar({ onSearch, currentPath }: NavbarProps) {
 
   return (
     <nav className="bg-gray-800 p-4 text-gray-100 shadow-lg">
-      <div className="container mx-auto flex items-center justify-start">
-        <NavLink to="/" className="flex items-center">
-          <img src="/logo.png" alt="MovieApp Logo" className="w-8 h-8 mr-24" />
-        </NavLink>
-        <ul className="flex space-x-12 mr-36">
-          <li>
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                isActive
-                  ? "font-bold text-gray-200"
-                  : "hover:text-gray-300 transition"
-              }
-            >
-              Home
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/favorites"
-              className={({ isActive }) =>
-                isActive
-                  ? "font-bold text-gray-200"
-                  : "hover:text-gray-300 transition"
-              }
-            >
-              Favorites
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/actors"
-              className={({ isActive }) =>
-                isActive
-                  ? "font-bold text-gray-200"
-                  : "hover:text-gray-300 transition"
-              }
-            >
-              Actors
-            </NavLink>
-          </li>
-        </ul>
-        <div className="mx-4 w-134">
+      <div className="container mx-auto flex flex-wrap items-center justify-center">
+        <div className="flex items-center justify-center w-full md:w-auto md:justify-start mb-4 md:mb-0">
+          <NavLink to="/" className="flex items-center">
+            <img src="/logo.png" alt="MovieApp Logo" className="w-8 h-8 mr-6" />
+          </NavLink>
+
+          <ul className="flex space-x-8">
+            <li>
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  isActive
+                    ? "font-bold text-gray-200"
+                    : "hover:text-gray-300 transition"
+                }
+              >
+                Home
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/favorites"
+                className={({ isActive }) =>
+                  isActive
+                    ? "font-bold text-gray-200"
+                    : "hover:text-gray-300 transition"
+                }
+              >
+                Favorites
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/actors"
+                className={({ isActive }) =>
+                  isActive
+                    ? "font-bold text-gray-200"
+                    : "hover:text-gray-300 transition"
+                }
+              >
+                Actors
+              </NavLink>
+            </li>
+          </ul>
+        </div>
+
+        <div className="w-full md:w-auto md:ml-auto">
           <SearchBar onSearch={onSearch} placeholder={getPlaceholder()} />
         </div>
       </div>

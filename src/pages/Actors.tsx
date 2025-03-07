@@ -31,10 +31,15 @@ export default function Actors({
     if (loading) return;
     try {
       const newActors = await searchActors(query || "a", page);
-      setActors((prev) => [
-        ...prev,
-        ...newActors.filter((a) => a.profile_path),
-      ]);
+      const filteredActors = newActors.filter((a) => a.profile_path); // Filter actors with profile_path
+      setActors((prev) => {
+        // Combine previous actors with new ones and remove duplicates by id
+        const combined = [...prev, ...filteredActors];
+        const uniqueActors = Array.from(
+          new Map(combined.map((actor) => [actor.id, actor])).values()
+        );
+        return uniqueActors;
+      });
     } catch (err) {
       console.error("Failed to load actors:", err);
     }
@@ -77,11 +82,10 @@ export default function Actors({
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold text-gray-100 mb-4">Actors</h1>
       {actors.length === 0 && !loading ? (
         <p className="text-center text-gray-400">No actors found.</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center max-w-8xl mx-auto">
           {actors.map((actor) => {
             const knownForItem = actor.known_for?.[0];
             const knownForText = knownForItem

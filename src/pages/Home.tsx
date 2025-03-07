@@ -70,7 +70,7 @@ export default function Home({
       {!loading && !movies.length && (
         <p className="text-center text-gray-400">No movies found.</p>
       )}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center max-w-8xl mx-auto">
         {movies.map((movie) => (
           <MovieCard key={movie.id} movie={movie} />
         ))}

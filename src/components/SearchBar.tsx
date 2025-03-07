@@ -24,7 +24,6 @@ export default function SearchBar({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Search submitted:", query, "from:", location.pathname);
     onSearch(query);
   };
 
