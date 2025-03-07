@@ -1,86 +1,115 @@
 # Movie App
 
-This is a React-based Movie App that allows users to browse movies, view details, and mark favorites. It uses Tailwind CSS for styling and React Router for navigation.
+A React-based web application that allows users to explore trending movies, search for movies and actors, view detailed information, and manage a list of favorite movies. Built with TypeScript, Tailwind CSS, and the TMDB API, this app features infinite scrolling, a responsive design, and a Swiper-powered movie carousel.
 
 ## Features
-- Display a list of trending movies
-- Search for movies
-- View movie details
-- Add/remove movies from favorites
-- Infinite scrolling for movie loading
-- Responsive UI with Tailwind CSS
-- Smooth navigation using React Router
+
+- **Home Page**: Displays trending movies with infinite scroll and a coverflow-style slider.
+- **Search**: Search for movies or actors with real-time results.
+- **Movie Details**: View detailed information about a movie, including cast, genres, and ratings.
+- **Actor Details**: Explore actor profiles with biography and filmography.
+- **Favorites**: Add and remove movies from a favorites list, persisted in local storage.
+- **Responsive Design**: Optimized for both desktop and mobile devices using Tailwind CSS.
+- **API Integration**: Powered by the TMDB (The Movie Database) API for movie and actor data.
+
+## Tech Stack
+
+- **Frontend**: React, TypeScript, React Router
+- **Styling**: Tailwind CSS
+- **API Client**: Axios
+- **Carousel**: Swiper
+- **State Management**: React Context API
+- **Build Tool**: Vite
+- **Deployment**: Vercel
+
+## Prerequisites
+
+- **Node.js**: Version 18.x or higher
+- **npm**: Version 8.x or higher
+- **TMDB API Key**: Obtain an API key from [The Movie Database (TMDB)](https://www.themoviedb.org/documentation/api).
 
 ## Installation
 
-1. **Clone the repository:**
-   ```sh
-   git clone https://github.com/your-username/movie-app.git
-   cd movie-app
+1. **Clone the Repository**:
+
+   ```bash
+   git clone https://github.com/Gugizm/movie_explorer.git
+   cd movie_explorer
+
    ```
 
-2. **Install dependencies:**
-   ```sh
+2. **Install Dependencies**:
    npm install
-   ```
 
-3. **Start the development server:**
-   ```sh
+3. **Set Up Environment Variables**:
+
+   - Create a .env file in the root directory.
+   - Add the following variables (replace with your TMDB API key):
+   - VITE_BASE_URL=https://api.themoviedb.org/3
+   - VITE_API_KEY=your-tmdb-api-key-here
+   - VITE_IMAGE_BASE_URL=https://image.tmdb.org/t/p
+
+4. **Run the Development Server**:
    npm run dev
-   ```
+   Open http://localhost:5173 in your browser to view the app.
 
-## Technologies Used
-- **React** with TypeScript
-- **Tailwind CSS** for styling
-- **React Router** for navigation
-- **Vite** for development
+   **Usage**
 
-## Components Overview
+   - Home: Browse trending movies and use the slider to explore featured titles. Scroll down to load more movies.
+   - Search: Use the search bar in the navbar to find movies (on Home/Favorites) or actors (on Actors page).
+   - Movie Details: Click a movie card to view its details, including cast and genres. Toggle the heart icon to add/remove from favorites.
+   - Actor Details: Click an actor card to see their biography and filmography.
+   - Favorites: View your saved movies and search within them.
 
-### Navbar.tsx
-- Provides navigation between "Home" and "Favorites" pages.
+   **Project Structure**
+   movie-app/
+   ├── public/
+   │ ├── favicon.ico
+   │ └── logo.png
+   ├── src/
+   │ ├── api/
+   │ │ └── api.ts
+   │ ├── components/
+   │ │ ├── LoadingSpinner.tsx
+   │ │ ├── MovieCard.tsx
+   │ │ ├── MovieSlider.tsx
+   │ │ ├── Navbar.tsx
+   │ │ └── SearchBar.tsx
+   │ ├── context/
+   │ │ └── FavoritesContext.tsx
+   │ ├── pages/
+   │ │ ├── ActorDetails.tsx
+   │ │ ├── Actors.tsx
+   │ │ ├── Favorites.tsx
+   │ │ ├── Home.tsx
+   │ │ └── MovieDetails.tsx
+   │ ├── types/
+   │ │ ├── Actor.ts
+   │ │ └── Movie.ts
+   │ ├── utils/
+   │ │ └── svgs.tsx
+   │ ├── constants/
+   │ │ └── config.ts
+   │ ├── App.tsx
+   │ ├── index.css
+   │ ├── main.tsx
+   │ └── vite-env.d.ts
+   ├── .env
+   ├── tsconfig.json
+   ├── tsconfig.app.json
+   ├── tsconfig.node.json
+   ├── vite.config.ts
+   ├── tailwind.config.js
+   ├── package.json
+   └── README.md
 
-### MovieCard.tsx
-- Displays a movie's poster, title, rating, and favorite toggle button.
+   **Scripts**
 
-### LoadingSpinner.tsx
-- Shows a spinning loader while content is being fetched.
+   - npm run dev: Start the development server.
+   - npm run build: Build the app for production.
+   - npm run lint: Run ESLint (if configured).
+   - npm run preview: Preview the production build locally.
 
-### SearchBar.tsx
-- Allows users to search for movies within favorites or the main list.
+   **License**
 
-### FavoritesContext.tsx
-- Manages the state for favorite movies using React Context API.
-
-### movies.ts
-- Contains API calls for fetching trending movies and searching for movies.
-
-### App.tsx
-- The main app component that sets up React Router and includes global layout elements.
-
-### Home.tsx
-- Displays trending movies with infinite scrolling and search functionality.
-
-### Favorites.tsx
-- Displays the list of favorite movies with a search bar and infinite scrolling.
-
-### MovieDetails.tsx
-- Shows detailed information about a selected movie.
-
-## How It Works
-1. **Home Page**
-   - Displays trending movies using `fetchTrendingMovies()` from `movies.ts`.
-   - Allows searching movies with `searchMovies()`.
-   - Uses infinite scrolling to load more movies.
-
-2. **Favorites Page**
-   - Lists favorite movies stored in context.
-   - Allows searching within favorites.
-   - Uses infinite scrolling to load more favorites.
-
-3. **Movie Details Page**
-   - Displays details of a selected movie.
-   - Allows adding/removing a movie from favorites.
-
-## License
-This project is licensed under the MIT License.
+   - This project is licensed under the MIT License
