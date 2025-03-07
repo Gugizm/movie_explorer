@@ -10,7 +10,7 @@ interface HomeProps {
   loading: boolean;
   error: string | null;
   page: number;
-  setPage: (page: number) => void;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
   setMovies: React.Dispatch<React.SetStateAction<Movie[]>>;
 }
 

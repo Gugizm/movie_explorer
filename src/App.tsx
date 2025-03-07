@@ -30,20 +30,21 @@ function AppContent() {
   const { favorites } = useFavorites();
 
   const handleSearch = async (searchQuery: string) => {
-    console.log(
-      "handleSearch called with query:",
-      searchQuery,
-      "from path:",
-      location.pathname
-    );
     setQuery(searchQuery);
+
+    // Reset states
+    setMoviePage(1);
+    setActorPage(1);
+    setMovies([]);
+    setActors([]);
+
     if (!searchQuery.trim()) {
       setActors([]);
       if (location.pathname === "/" || location.pathname === "/favorites") {
         setLoading(true);
         try {
           if (location.pathname === "/favorites") {
-            setMovies(favorites); // Reset to all favorites
+            setMovies(favorites);
           } else {
             const page1 = await fetchTrendingMovies(1);
             const page2 = await fetchTrendingMovies(2);
@@ -56,7 +57,6 @@ function AppContent() {
             setMovies(uniqueMovies);
             setMoviePage(3);
           }
-          console.log("Reset movies:", movies);
         } catch (err) {
           setError(err instanceof Error ? err.message : "An error occurred");
         } finally {
@@ -75,10 +75,8 @@ function AppContent() {
         const actorData = await searchActors(searchQuery, 1);
         setActors(actorData.filter((a) => a.profile_path));
         setActorPage(2);
-        setMovies([]);
-        console.log("Searched actors:", actorData);
         if (location.pathname.startsWith("/actor/")) {
-          navigate("/actors"); // Redirect to Actors page
+          navigate("/actors");
         }
       } else if (
         location.pathname === "/" ||
@@ -90,17 +88,14 @@ function AppContent() {
             movie.title.toLowerCase().includes(searchQuery.toLowerCase())
           );
           setMovies(filteredFavorites);
-          console.log("Searched favorites:", filteredFavorites);
         } else {
           const movieData = await searchMovies(searchQuery, 1);
           setMovies(movieData.filter((m) => m.poster_path));
           setMoviePage(2);
-          console.log("Searched movies:", movieData);
           if (location.pathname.startsWith("/movie/")) {
             navigate("/");
           }
         }
-        setActors([]);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
@@ -124,7 +119,6 @@ function AppContent() {
         );
         setMovies(uniqueMovies);
         setMoviePage(3);
-        console.log("Initial movies loaded:", uniqueMovies);
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred");
       } finally {
@@ -142,16 +136,6 @@ function AppContent() {
     ) {
       setQuery(""); // Reset query only for actor pages initially
     }
-    console.log(
-      "Current path:",
-      location.pathname,
-      "Query:",
-      query,
-      "Movies:",
-      movies,
-      "Actors:",
-      actors
-    );
   }, [location.pathname, movies, query, actors]);
 
   return (

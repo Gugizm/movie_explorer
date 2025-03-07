@@ -40,7 +40,7 @@ export default function MovieSlider({ movies }: MovieSliderProps) {
       modules={[EffectCoverflow, Pagination, Autoplay, Navigation]}
       className="mySwiper mb-8"
     >
-      {movies.slice(0, 20).map((movie) => (
+      {movies.slice(0, 40).map((movie) => (
         <SwiperSlide
           key={movie.id}
           className="max-w-xs cursor-pointer"
