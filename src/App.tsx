@@ -134,9 +134,15 @@ function AppContent() {
       location.pathname === "/actors" ||
       location.pathname.startsWith("/actor/")
     ) {
-      setQuery(""); // Reset query only for actor pages initially
+      setQuery("");
     }
   }, [location.pathname, movies, query, actors]);
+
+  useEffect(() => {
+    if (location.pathname === "/favorites" && !query) {
+      setMovies([]);
+    }
+  }, [location.pathname, query]);
 
   return (
     <>
