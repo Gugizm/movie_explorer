@@ -2,15 +2,10 @@ import {
   createContext,
   useContext,
   useState,
-  useEffect,
   ReactNode,
+  useEffect,
 } from "react";
-
-interface Movie {
-  id: number;
-  title: string;
-  poster_path: string;
-}
+import { Movie } from "../types/Movie";
 
 interface FavoritesContextType {
   favorites: Movie[];
@@ -34,13 +29,15 @@ export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
 
   const addFavorite = (movie: Movie) => {
     setFavorites((prev) => {
-      if (prev.some((f) => f.id === movie.id)) return prev;
-      return [...prev, movie];
+      if (!prev.some((fav) => fav.id === movie.id)) {
+        return [...prev, movie];
+      }
+      return prev;
     });
   };
 
   const removeFavorite = (id: number) => {
-    setFavorites((prev) => prev.filter((movie) => movie.id !== id));
+    setFavorites((prev) => prev.filter((fav) => fav.id !== id));
   };
 
   return (
@@ -54,7 +51,8 @@ export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
 
 export const useFavorites = () => {
   const context = useContext(FavoritesContext);
-  if (!context)
+  if (!context) {
     throw new Error("useFavorites must be used within a FavoritesProvider");
+  }
   return context;
 };

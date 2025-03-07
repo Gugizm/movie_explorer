@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
@@ -10,14 +11,25 @@ export default function SearchBar({
   placeholder = "Search...",
 }: SearchBarProps) {
   const [query, setQuery] = useState("");
+  const location = useLocation();
+
+  useEffect(() => {
+    if (
+      location.pathname === "/actors" ||
+      location.pathname.startsWith("/actor/")
+    ) {
+      setQuery(""); // Reset only for actor pages
+    }
+  }, [location.pathname]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("Search submitted:", query, "from:", location.pathname);
     onSearch(query);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mb-8 flex justify-center">
+    <form onSubmit={handleSubmit} className="flex justify-center">
       <input
         type="text"
         value={query}
