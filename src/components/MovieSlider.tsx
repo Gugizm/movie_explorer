@@ -5,10 +5,6 @@ import {
   Autoplay,
   Navigation,
 } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/effect-coverflow";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
 import { Movie } from "../types/Movie";
 import { useNavigate } from "react-router-dom";
 import { config } from "../constants/config";

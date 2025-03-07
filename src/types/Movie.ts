@@ -1,4 +1,3 @@
-// types/Movie.ts
 export interface Cast {
   id: number;
   name: string;
@@ -19,8 +18,8 @@ export interface Movie {
   release_date: string;
   vote_average: number;
   genres?: Genre[];
-  cast?: Cast[]; // Already in your code
+  cast?: Cast[];
   credits?: {
     cast: Cast[];
-  }; // Add this to match the API response
+  };
 }

@@ -1,7 +1,7 @@
 import { useEffect, useCallback } from "react";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { Actor } from "../types/Actor";
-import { searchActors } from "../api/api"; // Changed from fetchActors
+import { searchActors } from "../api/api";
 import { Dispatch, SetStateAction } from "react";
 import { config } from "../constants/config";
 import { useNavigate } from "react-router-dom";
@@ -30,7 +30,7 @@ export default function Actors({
   const loadActors = useCallback(async () => {
     if (loading) return;
     try {
-      const newActors = await searchActors(query || "a", page); // Use "a" as default query
+      const newActors = await searchActors(query || "a", page);
       setActors((prev) => [
         ...prev,
         ...newActors.filter((a) => a.profile_path),
@@ -40,18 +40,16 @@ export default function Actors({
     }
   }, [loading, page, query, setActors]);
 
-  // Initial load and query changes
   useEffect(() => {
     if (query) {
-      setActors([]); // Clear previous actors when query changes
-      setPage(1); // Reset page to 1
+      setActors([]);
+      setPage(1);
       loadActors();
     } else {
-      loadActors(); // Load default actors
+      loadActors();
     }
-  }, [query]);
+  }, [query, loadActors, setActors, setPage]);
 
-  // Infinite scroll effect
   useEffect(() => {
     const handleScroll = () => {
       if (
@@ -66,7 +64,6 @@ export default function Actors({
     return () => window.removeEventListener("scroll", handleScroll);
   }, [loading, setPage]);
 
-  // Load more when page changes
   useEffect(() => {
     loadActors();
   }, [page, loadActors]);

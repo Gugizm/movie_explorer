@@ -3,7 +3,7 @@ import SearchBar from "./SearchBar";
 
 interface NavbarProps {
   onSearch: (query: string) => void;
-  currentPath: string; // Add currentPath prop
+  currentPath: string;
 }
 
 export default function Navbar({ onSearch, currentPath }: NavbarProps) {

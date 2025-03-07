@@ -3,7 +3,7 @@ import { useFavorites } from "../context/FavoritesContext";
 import { Movie } from "../types/Movie";
 
 interface FavoritesProps {
-  movies: Movie[]; // Movies from search (filtered favorites)
+  movies: Movie[];
 }
 
 export default function Favorites({ movies }: FavoritesProps) {
